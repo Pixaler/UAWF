@@ -8,5 +8,5 @@ Program, that update my portable apps on Windows (Update Apps Without F@#k)
 1. Install Python3 on Windows
 2. Open cmd
 3. Set location, where script is
-4. Type pyton main.py
+4. Type ***python main.py***
 5. You perfect!
