@@ -353,13 +353,12 @@ version_shotcut = get_version_number(app_location)
 
 
 
-#SoftmakerOffice
-url23="https://rsload.net/soft/document/16292-softmaker-office-professional.html"
-soup=get_latest_version(url23)
-for tag in soup.find("a", href=re.compile(r'x32.*Portable RSLOAD.NET')):
-   latest_office=tag.text
+#LibreOffice
+url23="https://portableapps.com/apps/office/libreoffice_portable"
+latest_office=get_latest_version_portableapps(url23)
 
-app_location = r'C:\PortableApps\SoftMakerOffice\App\SoftMaker Office 2021\TextMaker.exe'
+
+app_location = r'C:\PortableApps\LibreOfficePortable\App\libreoffice\program\soffice.exe'
 version_office = get_version_number(app_location)
 
 
@@ -427,6 +426,7 @@ version_cd = get_version_number(app_location)
 
 
 
+
 #WinRAR
 url29="https://www.win-rar.com/download.html?&L=0"
 soup=get_latest_version(url29)
@@ -453,6 +453,28 @@ for tag in soup.find("a", href=re.compile("files/details/wiztree.html")):
 app_location = r'C:\PortableApps\WizTree\WizTree64.exe'
 version_wiztree = get_version_number(app_location)
 
+#Firefox PortableApps.com
+url31="https://portableapps.com/apps/internet/firefox_portable"
+latest_firefox=get_latest_version_portableapps(url31)
+
+app_location= r'K:\FirefoxPortable\App\Firefox64\firefox.exe'
+version_firefox = get_version_number(app_location)
+
+#Thunderbird PortableApps.com
+url32="https://portableapps.com/apps/internet/thunderbird_portable"
+latest_thunderbird=get_latest_version_portableapps(url32)
+
+app_location= r'K:\ThunderbirdPortable\App\Thunderbird64\thunderbird.exe'
+version_thunderbird = get_version_number(app_location)
+
+#Telegram
+url33 = "https://github.com/telegramdesktop/tdesktop/releases/latest"
+repo = "telegramdesktop/tdesktop/releases/tag"
+latest_telegram = get_latest_version_github(url33, repo)
+latest_telegram=re.sub(r'v',"",latest_telegram)
+
+app_location= r'K:\Telegram\Telegram.exe'
+version_telegram = get_version_number(app_location)
 
 #Table
 th=['Name','Installed','Latest']
@@ -478,14 +500,17 @@ td=['AdobeAcrobatPro', version_adobe, latest_adobe,
     'RivaTuner Statistics Server', version_rtss, latest_rtss,
     'Rufus', version_rufus, latest_rufus,
     'ShotCut', version_shotcut, latest_shotcut,
-    'SoftmakerOffice', version_office, latest_office,
+    'LibreOffice', version_office, latest_office,
     'Spotify', version_spotify, latest_spotify,
     'Sumatra', version_sumatra, latest_sumatra,
     'TeamViewer', version_teamviewer, latest_teamviewer,
     'VSCode', version_vscode, latest_vscode,
     'WinCDEmu', version_cd, latest_cd,
     'WinRAR', version_winrar, latest_winrar,
-    'WizTree', version_wiztree, latest_wiztree]
+    'WizTree', version_wiztree, latest_wiztree,
+    'Firefox', version_firefox, latest_firefox,
+    'Thunderbird', version_thunderbird, latest_thunderbird,
+    'Telegram', version_telegram, latest_telegram]
 
 
 columns = len(th) # Подсчитаем кол-во столбцов на будущее.
