@@ -1,8 +1,11 @@
+import time
+from progress.bar import IncrementalBar
 from win32com.client import Dispatch
 from urllib.request import Request, urlopen
 import re 
 from bs4 import BeautifulSoup
 from prettytable import PrettyTable
+
 
 def get_version_number(app_location):
    parser = Dispatch("Scripting.FileSystemObject")
@@ -27,34 +30,36 @@ def get_latest_version_portableapps(url):
         latest=re.sub(r" ", "", latest)
     return latest
 
-def get_latest_version_github(url, repo):
-    page = urlopen(url)
+def get_latest_version_github(repo):
+    page = urlopen("https://github.com" + repo +"/releases/latest")
     html = page.read().decode("ansi")
     soup = BeautifulSoup(html, 'lxml')
     latest=""
-    for tag in soup.find_all(href=re.compile(repo)):
-        latest=re.sub("\n", "", tag.text)
-        latest=re.sub(" ", "", latest)
+    for tag in soup.find_all(href=re.compile(repo + "/releases/tag")):
+        latest=re.sub(r'rel',"",tag.text)
+        latest=re.sub(r'v', "", latest)
+        latest=re.sub(r'\n', "", latest)
+        latest=re.sub(r' ' , "", latest)
     return latest
 
 
+bar = IncrementalBar("\tCollecting data", max = 33)
 
-print("\tCollecting data...")
+
 #AdobeAcrobatPro Portable rsload.net
-url1 = "https://rsload.net/soft/big-programm/8875-adobe-acrobat-pro-v1010-rus-keygen.html"
-soup=get_latest_version(url1)
-for tag in soup.find_all(href=re.compile("x64 Portable")):
-    latest_adobe=re.sub("x64", "", tag.text)
-    latest_adobe=re.sub(r" ", "", latest_adobe)
+url1 = "https://portableapps.com/apps/office/pdf-xchange-editor-portable"
+latest_adobe = get_latest_version_portableapps (url1)
+
   
-app_location = r'C:\PortableApps\AcrobatPro\App\Acrobat\Acrobat.exe'
+app_location = r'C:\PortableApps\PDFXChangeEditor\PDFXEdit.exe'
 version_adobe = get_version_number(app_location)
+bar.next()
+time.sleep(1)
 
 
 
 
-
-#Autoruns
+#Autoruns techspot
 url2 = "https://docs.microsoft.com/en-us/sysinternals/downloads/autoruns"
 soup=get_latest_version(url2)
 for tag in soup.find_all(id=re.compile("autoruns-for-windows")):
@@ -63,25 +68,24 @@ for tag in soup.find_all(id=re.compile("autoruns-for-windows")):
 
 app_location = r'C:\PortableApps\Autoruns\Autoruns64.exe'
 version_autoruns = get_version_number(app_location)
+bar.next()
+time.sleep(1)
 
-
-
-
+  
 
 #Discord portapps.io
-url3 ="https://github.com/portapps/discord-portable/releases/latest"
-repo="/portapps/discord-portable/releases/tag"
+repo="/portapps/discord-portable"
 
-latest_discord=get_latest_version_github(url3, repo)
+latest_discord=get_latest_version_github(repo)
 
 app_location = r'C:\PortableApps\discord-portable\app\app-1.0.9006\Discord.exe'
 version_discord = get_version_number(app_location)
+bar.next()
+time.sleep(1)
 
 
 
-
-
-#Emacs
+#Emacs 
 url4 ="https://www.gnu.org/savannah-checkouts/gnu/emacs/emacs.html"
 soup=get_latest_version(url4)
 for tag in soup.find_all('h2', id=re.compile("Releases")):
@@ -91,29 +95,23 @@ for tag in soup.find_all('h2', id=re.compile("Releases")):
 
 app_location = r'C:\PortableApps\emacs\bin\runemacs.exe'
 version_emacs = get_version_number(app_location)
+bar.next()
+time.sleep(1)
 
 
+#Far Manager Github
+repo="/FarGroup/FarManager"
+latest_far=get_latest_version_github(repo)
 
-
-#Far Manager
-url5 ="https://www.farmanager.com/download.php?l=en"
-soup=get_latest_version(url5)
-
-for tag in soup.find("b"):
-    latest_far=re.sub("Far Manager ", "", tag.text)
-    latest_far=re.sub("x86", "", latest_far)
-    latest_far=re.sub(r" ", "", latest_far)
-    latest_far=re.sub(r"build", ".", latest_far)
-    latest_far=re.sub(r"v", "", latest_far)
 
 app_location = r'C:\PortableApps\Far\Far.exe'
 version_far = get_version_number(app_location)
+bar.next()
+time.sleep(1)
 
 
 
-
-
-#Foobar2000
+#Foobar2000 techspot
 url6 = "https://www.foobar2000.org/download"
 soup=get_latest_version(url6)
 for tag in soup.find_all("a",href=re.compile("getfile/foobar2000")):
@@ -124,22 +122,20 @@ for tag in soup.find_all("a",href=re.compile("getfile/foobar2000")):
 
 app_location = r'C:\PortableApps\foobar2000\foobar2000.exe'
 version_foobar = get_version_number(app_location)
-
-
+bar.next()
+time.sleep(1)
 
 
 
 #Free Download Manager Portable
-url7 = "https://rsload.net/soft/manager/8984-free-download-manager.html"
-soup = get_latest_version(url7)
-for tag in soup.find_all("a",href=re.compile("portable-RSLOAD.NET")):
-    latest_fdm=re.sub("Portable", "", tag.text)
-    latest_fdm=re.sub(r" ", "", latest_fdm)
+url7 = "https://portableapps.com/apps/internet/free-download-manager-portable"
+latest_fdm= get_latest_version_portableapps(url7)
 
-app_location = r'C:\PortableApps\FreeDownloadManager\fdm.exe'
+
+app_location = r'C:\PortableApps\FreeDownloadManagerPortable\App\FreeDownloadManager\fdm.exe'
 version_fdm = get_version_number(app_location)
-
-
+bar.next()
+time.sleep(1)
 
 
 
@@ -149,8 +145,8 @@ latest_fsv = get_latest_version_portableapps(url8)
 
 app_location = r'C:\PortableApps\FSViewer\FSViewer.exe'
 version_fsv = get_version_number(app_location)
-
-
+bar.next()
+time.sleep(1)
 
 
 
@@ -160,8 +156,8 @@ latest_gimp = get_latest_version_portableapps(url9)
 
 app_location = r'C:\PortableApps\GIMPPortable\App\gimp\bin\gimp-2.10.exe'
 version_gimp = get_version_number(app_location)
-
-
+bar.next()
+time.sleep(1)
 
 
 
@@ -175,27 +171,23 @@ for tag in soup.find_all("span", class_="version"):
 
 app_location = r'C:\PortableApps\Git\git-bash.exe'
 version_git = get_version_number(app_location)
-
-
+bar.next()
+time.sleep(1)
 
 
 
 #Kodi
-url11="https://kodi.tv/download/windows"
-soup = get_latest_version(url11)
-for tag in soup.find_all("h1", class_="text-xl font-bold"):
-    latest_kodi=re.sub(r" ", "", tag.text)
-    latest_kodi=re.sub(r"Kodiv", "", latest_kodi)
-    latest_kodi=re.sub(r'[(]Matrix[)]', "", latest_kodi)
+repo="/xbmc/xbmc"
+latest_kodi = get_latest_version_github(repo)
 
-app_location = r'C:\PortableApps\Kodi\kodi.exe'
+app_location = r'C:\PortableApps\Kodi\Uninstall.exe'
 version_kodi = get_version_number(app_location)
+bar.next()
+time.sleep(1)
 
 
 
-
-
-#MSI Afterburner
+#MSI Afterburner techspot
 url12="https://www.guru3d.com/files-details/msi-afterburner-beta-download.html"
 soup = get_latest_version(url12)
 
@@ -206,35 +198,31 @@ for tag in soup.find_all("span", itemprop="itemreviewed"):
 
 app_location = r'C:\PortableApps\MSI Afterburner\MSIAfterburner.exe'
 version_msia = get_version_number(app_location)
+bar.next()
+time.sleep(1)
 
 
 
+#Notepad++ 
+url13="https://portableapps.com/apps/development/notepadpp_portable"
+latest_npp=get_latest_version_portableapps(url13)
 
 
-#Notepad++
-url13="https://notepad-plus-plus.org/downloads/"
-soup=get_latest_version(url13)
-for tag in soup.find_all("a", href=re.compile("/downloads")):
-   latest_npp=re.sub(r"Current Version ", "", tag.text)
-   latest_npp=re.sub(r" ", "", latest_npp)
-   break
-
-app_location = r'C:\PortableApps\npp\notepad++.exe'
+app_location = r'C:\PortableApps\Notepad++Portable\App\Notepad++64\notepad++.exe'
 version_npp = get_version_number(app_location)
-
-
+bar.next()
+time.sleep(1)
 
 
 
 #OBS Studio
-url14="https://github.com/obsproject/obs-studio/releases/latest"
-repo="/obsproject/obs-studio/releases/tag"
-latest_obs=get_latest_version_github(url14,repo)
+repo="/obsproject/obs-studio"
+latest_obs=get_latest_version_github(repo)
 
 app_location = r'C:\PortableApps\OBSStudio\bin\64bit\obs64.exe'
 version_obs = get_version_number(app_location)
-
-
+bar.next()
+time.sleep(1)
 
 
 
@@ -244,12 +232,12 @@ latest_pot=get_latest_version_portableapps(url15)
 
 app_location = r'C:\PortableApps\PotPlayerPortable\App\PotPlayer\PotPlayer.dll'
 version_pot = get_version_number(app_location)
+bar.next()
+time.sleep(1)
 
 
 
-
-
-# Process Explorer
+# Process Explorer techspot
 url16="https://docs.microsoft.com/en-us/sysinternals/downloads/process-explorer"
 soup=get_latest_version(url16)
 
@@ -259,49 +247,25 @@ for tag in soup.find_all("h1"):
    latest_pe=re.sub(r"Process Explorer v", "", tag.text)
    latest_pe=re.sub(r" ", "", latest_pe)
    latest_pe=re.sub(r'Build', ".", latest_pe)
-
-
-
-
-
-
-
-# Psiphon 
-url17 = "https://rsload.net/soft/traffic/33341-psiphon.html"
-soup=get_latest_version(url17)
-for tag in soup.find_all("a", href=re.compile("/psiphon_3")):
-   latest_psiphon=re.sub(r" Build ", ".", tag.text)
-
-app_location = r'C:\PortableApps\Psiphon\App\AppInfo\AppInfo.ini'
-pattern="PackageVersion="
-with open(app_location, "r") as file:
-    for line in file:
-      if pattern not in line:
-        continue
-      else:
-        version_psiphon=re.sub(r"PackageVersion=", "", line)
-        version_psiphon=re.sub(r"\n", "", version_psiphon)
-
-
-
+bar.next()
+time.sleep(1)
 
 
 
 
 
 #qBittorrent
-url18="https://github.com/portapps/qbittorrent-portable/releases/latest"
-repo="/portapps/qbittorrent-portable/releases/tag"
-latest_qbt=get_latest_version_github(url18,repo)
+repo="/portapps/qbittorrent-portable"
+latest_qbt=get_latest_version_github(repo)
 
 app_location = r'C:\PortableApps\qbittorrent-portable\app\qbittorrent.exe'
 version_qbt = get_version_number(app_location)
+bar.next()
+time.sleep(1)
 
 
 
-
-
-#Reaper
+#Reaper techspot
 url19="https://www.reaper.fm/download.php"
 soup=get_latest_version(url19)
 for tag in soup.find("div", class_=re.compile("downloadinfo")):
@@ -313,8 +277,8 @@ for tag in soup.find("div", class_=re.compile("downloadinfo")):
 
 app_location = r'C:\PortableApps\REAPER\reaper.exe'
 version_reaper = get_version_number(app_location)
-
-
+bar.next()
+time.sleep(1)
 
 
 #RivaTuner Statistics Server
@@ -327,19 +291,18 @@ for tag in soup.find_all("span", itemprop="itemreviewed"):
 
 app_location = r'C:\PortableApps\RivaTuner Statistics Server\RTSS.exe'
 version_rtss = get_version_number(app_location)
-
-
+bar.next()
+time.sleep(1)
 
 
 #Rufus
-url21="https://github.com/pbatard/rufus/releases/latest"
-repo="/pbatard/rufus/releases/tag"
-latest_rufus=get_latest_version_github(url21, repo)
+repo="/pbatard/rufus"
+latest_rufus=get_latest_version_github(repo)
 
 app_location = r'C:\PortableApps\Rufus\rufus.exe'
 version_rufus = get_version_number(app_location)
-
-
+bar.next()
+time.sleep(1)
 
 
 
@@ -349,8 +312,8 @@ latest_shotcut=get_latest_version_portableapps(url22)
 
 app_location = r'C:\PortableApps\ShotcutPortable\App\Shotcut64\shotcut.exe'
 version_shotcut = get_version_number(app_location)
-
-
+bar.next()
+time.sleep(1)
 
 
 #LibreOffice
@@ -360,9 +323,8 @@ latest_office=get_latest_version_portableapps(url23)
 
 app_location = r'C:\PortableApps\LibreOfficePortable\App\libreoffice\program\soffice.exe'
 version_office = get_version_number(app_location)
-
-
-
+bar.next()
+time.sleep(1)
 
 
 #Spotify
@@ -373,21 +335,19 @@ for tag in soup.find("a", href=re.compile(r'spotify.*.rar')):
 
 app_location = r'C:\PortableApps\Spotify\App\Spotify.exe'
 version_spotify = get_version_number(app_location)
-
-
+bar.next()
+time.sleep(1)
 
 
 
 #Sumatra
-url25="https://github.com/sumatrapdfreader/sumatrapdf/releases/latest"
-repo="sumatrapdfreader/sumatrapdf/releases/tag"
-latest_sumatra=get_latest_version_github(url25, repo)
-latest_sumatra=re.sub(r'rel',"",latest_sumatra)
+url25="https://portableapps.com/apps/office/sumatra_pdf_portable"
+latest_sumatra=get_latest_version_portableapps(url25)
 
 app_location = r'C:\PortableApps\SumatraPDF\SumatraPDF.exe'
 version_sumatra = get_version_number(app_location)
-
-
+bar.next()
+time.sleep(1)
 
 
 #TeamViewer
@@ -396,21 +356,18 @@ latest_teamviewer=get_latest_version_portableapps(url26)
 
 app_location = r'C:\PortableApps\TeamViewerPortable\App\teamviewer\TeamViewer.exe'
 version_teamviewer = get_version_number(app_location)
-
-
+bar.next()
+time.sleep(1)
 
 
 #VSCode
-url27="https://code.visualstudio.com/"
-soup=get_latest_version(url27)
-for tag in soup.find("a", id=re.compile("banner-link-updates")):
-   latest_vscode=tag.text
-   latest_vscode=re.sub(r'Version ',"",latest_vscode)
+repo="/Microsoft/vscode"
+latest_vscode=get_latest_version_github(repo)
 
 app_location = r'C:\PortableApps\VSCode\Code.exe'
 version_vscode = get_version_number(app_location)
-
-
+bar.next()
+time.sleep(1)
 
 
 
@@ -421,13 +378,13 @@ latest_cd=get_latest_version_portableapps(url28)
 
 app_location = r'C:\PortableApps\WinCDEmuPortable\App\WinCDEmu\PortableWinCDEmu-x.x.exe'
 version_cd = get_version_number(app_location)
+bar.next()
+time.sleep(1)
 
 
 
 
-
-
-#WinRAR
+#WinRAR techspot
 url29="https://www.win-rar.com/download.html?&L=0"
 soup=get_latest_version(url29)
 for tag in soup.find("span", class_=re.compile("dwn-btn")):
@@ -437,12 +394,12 @@ for tag in soup.find("span", class_=re.compile("dwn-btn")):
 
 app_location = r'C:\PortableApps\WinRAR\WinRAR.exe'
 version_winrar = get_version_number(app_location)
+bar.next()
+time.sleep(1)
 
 
 
-
-
-#WizTree
+#WizTree techspot
 url30="https://www.majorgeeks.com/files/details/wiztree.html"
 soup=get_latest_version(url30)
 for tag in soup.find("a", href=re.compile("files/details/wiztree.html")):
@@ -452,6 +409,9 @@ for tag in soup.find("a", href=re.compile("files/details/wiztree.html")):
 
 app_location = r'C:\PortableApps\WizTree\WizTree64.exe'
 version_wiztree = get_version_number(app_location)
+bar.next()
+time.sleep(1)
+
 
 #Firefox PortableApps.com
 url31="https://portableapps.com/apps/internet/firefox_portable"
@@ -459,6 +419,9 @@ latest_firefox=get_latest_version_portableapps(url31)
 
 app_location= r'K:\FirefoxPortable\App\Firefox64\firefox.exe'
 version_firefox = get_version_number(app_location)
+bar.next()
+time.sleep(1)
+
 
 #Thunderbird PortableApps.com
 url32="https://portableapps.com/apps/internet/thunderbird_portable"
@@ -466,19 +429,25 @@ latest_thunderbird=get_latest_version_portableapps(url32)
 
 app_location= r'K:\ThunderbirdPortable\App\Thunderbird64\thunderbird.exe'
 version_thunderbird = get_version_number(app_location)
+bar.next()
+time.sleep(1)
+
+
 
 #Telegram
-url33 = "https://github.com/telegramdesktop/tdesktop/releases/latest"
-repo = "telegramdesktop/tdesktop/releases/tag"
-latest_telegram = get_latest_version_github(url33, repo)
-latest_telegram=re.sub(r'v',"",latest_telegram)
+repo = "/telegramdesktop/tdesktop"
+latest_telegram = get_latest_version_github(repo)
 
 app_location= r'K:\Telegram\Telegram.exe'
 version_telegram = get_version_number(app_location)
+bar.next()
+bar.finish()
+time.sleep(1)
+
 
 #Table
 th=['Name','Installed','Latest']
-td=['AdobeAcrobatPro', version_adobe, latest_adobe,
+td=['PDFXChange Editor', version_adobe, latest_adobe,
     'Autoruns', version_autoruns, latest_autoruns,
     'Discord', version_discord, latest_discord,
     'Emacs', version_emacs, latest_emacs,
@@ -494,7 +463,6 @@ td=['AdobeAcrobatPro', version_adobe, latest_adobe,
     'OBS Studio', version_obs, latest_obs,
     'PotPlayer', version_pot, latest_pot,
     'Process Explorer', version_pe, latest_pe,
-    'Psiphon', version_psiphon, latest_psiphon,
     'qBitttorent', version_qbt, latest_qbt,
     'Reaper', version_reaper, latest_reaper,
     'RivaTuner Statistics Server', version_rtss, latest_rtss,
@@ -524,3 +492,6 @@ while td_data:
     td_data = td_data[columns:] # Используя срез переопределяем td_data так, чтобы он больше не содержал первых 5 элементов.
 
 print(table)
+
+''' 
+'''
