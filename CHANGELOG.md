@@ -1,3 +1,6 @@
+# v0.2.1
+1. Move all input data to file. That allows make program more clearer
+
 # v0.2
 ## Changes
 1. Clear function that parsing github page

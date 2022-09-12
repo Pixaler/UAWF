@@ -1,0 +1,22 @@
+Autoruns
+https://www.techspot.com/downloads/2879-autoruns.html
+C:\PortableApps\Autoruns\Autoruns64.exe
+foobar200
+https://www.techspot.com/downloads/2258-foobar.html
+C:\PortableApps\foobar2000\foobar2000.exe
+MSI Afterburner
+https://www.techspot.com/downloads/4895-msi-afterburner.html
+C:\PortableApps\MSI Afterburner\MSIAfterburner.exe
+Process Explorer
+https://www.techspot.com/downloads/362-process-explorer.html
+C:\PortableApps\ProcessExplorer\procexp64.exe
+REAPER
+https://www.techspot.com/downloads/2642-reaper.html
+C:\PortableApps\REAPER\reaper.exe
+WinRAR
+https://www.techspot.com/downloads/67-winrar.html
+C:\PortableApps\WinRAR\WinRAR.exe
+WizTree
+https://www.techspot.com/downloads/7470-wiztree.html
+C:\PortableApps\WizTree\WizTree64.exe
+

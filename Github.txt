@@ -1,0 +1,24 @@
+Discord
+/portapps/discord-portable
+C:\PortableApps\discord-portable\app\app-1.0.9006\Discord.exe
+Far Manager
+/FarGroup/FarManager
+C:\PortableApps\Far\Far.exe
+Kodi
+/xbmc/xbmc
+C:\PortableApps\Kodi\Uninstall.exe
+OBS Studio
+/obsproject/obs-studio
+C:\PortableApps\OBSStudio\bin\64bit\obs64.exe
+qBittorrent
+/portapps/qbittorrent-portable
+C:\PortableApps\qbittorrent-portable\app\qbittorrent.exe
+Rufus
+/pbatard/rufus
+C:\PortableApps\Rufus\rufus.exe
+VSCode
+/Microsoft/vscode
+C:\PortableApps\VSCode\Code.exe
+Telegram
+/telegramdesktop/tdesktop
+K:\Telegram\Telegram.exe

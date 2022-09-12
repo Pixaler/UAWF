@@ -1,0 +1,39 @@
+PDF-XChange Editor
+https://portableapps.com/apps/office/pdf-xchange-editor-portable
+C:\PortableApps\PDFXChangeEditor\PDFXEdit.exe
+Free Download Manager
+https://portableapps.com/apps/internet/free-download-manager-portable
+C:\PortableApps\FreeDownloadManagerPortable\App\FreeDownloadManager\fdm.exe
+FastStone Image Viewer
+https://portableapps.com/apps/graphics_pictures/faststone-image-viewer-portable
+C:\PortableApps\FSViewer\FSViewer.exe
+GIMP
+https://portableapps.com/apps/graphics_pictures/gimp_portable
+C:\PortableApps\GIMPPortable\App\gimp\bin\gimp-2.10.exe
+Notepad++
+https://portableapps.com/apps/development/notepadpp_portable
+C:\PortableApps\Notepad++Portable\App\Notepad++64\notepad++.exe
+PotPlayer
+https://portableapps.com/apps/music_video/potplayer-portable
+C:\PortableApps\PotPlayerPortable\App\PotPlayer\PotPlayer.dll
+Shotcut
+https://portableapps.com/apps/music_video/shotcut-portable
+C:\PortableApps\ShotcutPortable\App\Shotcut64\shotcut.exe
+LibreOffice
+https://portableapps.com/apps/office/libreoffice_portable
+C:\PortableApps\LibreOfficePortable\App\libreoffice\program\soffice.exe
+Sumatra PDF
+https://portableapps.com/apps/office/sumatra_pdf_portable
+C:\PortableApps\SumatraPDF\SumatraPDF.exe
+TeamViewer
+https://portableapps.com/apps/utilities/teamviewer_portable
+C:\PortableApps\TeamViewerPortable\App\teamviewer\TeamViewer.exe
+WinCDEmu
+https://portableapps.com/apps/utilities/wincdemu-portable
+C:\PortableApps\WinCDEmuPortable\App\WinCDEmu\PortableWinCDEmu-x.x.exe
+Firefox
+https://portableapps.com/apps/internet/firefox_portable
+K:\FirefoxPortable\App\Firefox64\firefox.exe
+Thunderbird
+https://portableapps.com/apps/internet/thunderbird_portable
+K:\ThunderbirdPortable\App\Thunderbird64\thunderbird.exe
