@@ -1,3 +1,7 @@
+# v0.3
+1. Add list of sites with download page of latest version apps
+2. Add menu that open links for download update apps in browser
+
 # v0.2.1
 1. Move all input data to file. That allows make program more clearer
 

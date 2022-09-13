@@ -1,4 +1,5 @@
 import time
+import webbrowser
 from progress.bar import IncrementalBar
 from win32com.client import Dispatch
 from urllib.request import Request, urlopen
@@ -21,7 +22,8 @@ def get_latest_version(url):
     return soup
 
 def get_latest_version_portableapps(url):
-    page = urlopen(url)
+    request_site = Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    page = urlopen(request_site)
     html = page.read().decode("ansi")
     soup = BeautifulSoup(html, 'lxml')
     latest=""
@@ -32,7 +34,9 @@ def get_latest_version_portableapps(url):
     return latest
 
 def get_latest_version_github(repo):
-    page = urlopen("https://github.com" + repo +"/releases/latest")
+    url = "https://github.com" + repo +"/releases/latest"
+    request_site = Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    page = urlopen(request_site)
     html = page.read().decode("ansi")
     soup = BeautifulSoup(html, 'lxml')
     latest=""
@@ -46,7 +50,8 @@ def get_latest_version_github(repo):
     return latest
 
 def get_latest_version_techspot(url):
-    page = urlopen(url)
+    request_site = Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    page = urlopen(request_site)
     html = page.read().decode("ansi")
     soup = BeautifulSoup(html, 'lxml')
     latest=""
@@ -73,12 +78,29 @@ class Prog(object):
     def GetLatest(self):
         return self.latest
 
-list_of_prog = []# create an empty list
+class Link(object):
+    def __init__(self, name, link):
+        self.name = name
+        self.link = link
 
-bar = IncrementalBar("Collecting data", max = 32)
+    def Output(self):
+        return self.name + "\t Download link: " + self.link
+
+    def GetName(self):
+        return self.name
+
+    def GetLink(self):
+        return self.link
+
+list_of_prog = [] # create an empty list of prog
+list_of_links = [] # empty list with download links
+
+amount_of_prog = 32 # how many programs I have 
+
+bar = IncrementalBar("Collecting data", max = amount_of_prog)
 count = 1
 bar.next()
-with open("Github.txt") as f:
+with open("C:\BATCH\!shit\App\Github.txt") as f:
     for lines in f:
         if count % 3 == 1:
             name = str(lines)
@@ -99,9 +121,9 @@ with open("Github.txt") as f:
             list_of_prog.append(name_list)
             bar.next()
         count += 1
-    f.close()
+f.close()
 
-with open("PortableApps.txt") as f:
+with open("C:\BATCH\!shit\App\PortableApps.txt") as f:
     for lines in f:
         if count % 3 == 1:
             name = str(lines)
@@ -123,9 +145,9 @@ with open("PortableApps.txt") as f:
             list_of_prog.append(name_list)
             bar.next()
         count += 1
-    f.close()
+f.close()
 
-with open("Techspot.txt") as f:
+with open("C:\BATCH\!shit\App\Techspot.txt") as f:
     for lines in f:
         if count % 3 == 1:
             name = str(lines)
@@ -146,8 +168,7 @@ with open("Techspot.txt") as f:
             list_of_prog.append(name_list)
             bar.next()
         count += 1
-    f.close()
-
+f.close()
 
 
 #Git
@@ -207,18 +228,48 @@ bar.finish()
 time.sleep(1)
 
 
-
 #Table
 print('\n')
-th=['Name','Installed','Latest']
+th=['Number', 'Name','Installed','Latest']
 table = PrettyTable(th) 
 
 columns = len(th) # Подсчитаем кол-во столбцов на будущее.
+number_row = 1
 
 for name_list in list_of_prog:
     name_tb = name_list.GetName()
     version_tb = name_list.GetVersion()
     latest_tb = name_list.GetLatest()
-    table.add_row([name_tb, version_tb, latest_tb])  # Создаем строку с нашими данными
+    table.add_row([number_row, name_tb, version_tb, latest_tb])  # Создаем строку с нашими данными
+    number_row += 1
 
 print(table)
+
+#Menu
+
+menu_count = 1
+
+with open("C:\BATCH\!shit\App\DownloadLinks.txt") as f:
+    for lines in f:
+        if menu_count % 2 == 1:
+            name = str(lines)
+            name = re.sub(r'\n', "", name)
+        
+        if menu_count % 2 == 0:
+            link = str(lines)
+            link = re.sub(r'\n', "", link)
+            name_link = name
+            name_link = Link(name, link)
+            list_of_links.append(name_link)
+
+        menu_count += 1
+f.close()
+
+while True:
+    menu_option = input("Type number of program (from 1 to 31). Type (exit) to stop: ")
+    if menu_option == "exit":
+        break
+    menu_option = int(menu_option)
+    url = list_of_links[menu_option - 1].GetLink()
+    webbrowser.open(url, new = 0, autoraise = True)
+    print("\n")
