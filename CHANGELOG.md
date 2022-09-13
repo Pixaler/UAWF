@@ -3,7 +3,9 @@
 2. Add menu that open links for download update apps in browser
 
 # v0.2.1
+## Changes
 1. Move all input data to file. That allows make program more clearer
+2. Start to provide an .exe file
 
 # v0.2
 ## Changes
