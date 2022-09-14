@@ -1,11 +1,16 @@
+# v0.3.1
+## Changes
+1. Now program check, if txt files are avaliable
+2. For Github releases, I remove my path to txt file. Now, program try to get txt files from folder, where program is
+
 # v0.3
+## Changes
 1. Add list of sites with download page of latest version apps
 2. Add menu that open links for download update apps in browser
 
 # v0.2.1
 ## Changes
 1. Move all input data to file. That allows make program more clearer
-2. Start to provide an .exe file
 
 # v0.2
 ## Changes
