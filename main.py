@@ -61,13 +61,14 @@ def get_latest_version_techspot(url):
     return latest
 
 class Prog(object):
-    def __init__(self, name, version, latest):
+    def __init__(self, name, version, latest, link):
         self.name = name
         self.version = version
         self.latest = latest
+        self.link = link
 
     def Output(self):
-        return self.name + "\t Installed: " + self.version + " Latest: " + self.latest
+        return self.name + "\t Installed: " + self.version + " Latest: " + self.latest + " Link:" + self.link
 
     def GetName(self):
         return self.name
@@ -78,93 +79,89 @@ class Prog(object):
     def GetLatest(self):
         return self.latest
 
-class Link(object):
-    def __init__(self, name, link):
-        self.name = name
-        self.link = link
-
-    def Output(self):
-        return self.name + "\t Download link: " + self.link
-
-    def GetName(self):
-        return self.name
-
-    def GetLink(self):
+    def GetLink(self): 
         return self.link
 
-list_of_prog = [] # create an empty list of prog
-list_of_links = [] # empty list with download links
 
-amount_of_prog = 32 # how many programs I have 
+list_of_prog = [] # create an empty list of prog
+
+amount_of_prog = 31 # how many programs I have 
 
 bar = IncrementalBar("Collecting data", max = amount_of_prog)
 count = 1
-bar.next()
-with open("C:\BATCH\!shit\App\Github.txt") as f:
+
+with open("Github.txt") as f:
     for lines in f:
-        if count % 3 == 1:
+        if count % 4 == 1:
             name = str(lines)
             name = re.sub(r'\n', "", name)
         
-        if count % 3 == 2:
+        if count % 4 == 2:
             repo = str(lines)
             repo = re.sub(r'\n', "", repo)
             latest = get_latest_version_github(repo)
 
-        if count % 3 == 0:
+        if count % 4 == 3:
             app_location = str(lines)
             app_location = re.sub(r'\n', "", app_location)
             version = get_version_number(app_location)
 
-            name_list = name
-            name_list = Prog(name, version, latest)
+        if count % 4 == 0:
+            link = str(lines)
+            link = re.sub(r'\n', "", link)
+            name_list = Prog(name, version, latest, link)
             list_of_prog.append(name_list)
             bar.next()
         count += 1
 f.close()
 
-with open("C:\BATCH\!shit\App\PortableApps.txt") as f:
+with open("PortableApps.txt") as f:
     for lines in f:
-        if count % 3 == 1:
+        if count % 4 == 1:
             name = str(lines)
             name = re.sub(r'\n', "", name)
         
-        if count % 3 == 2:
+        if count % 4 == 2:
             url = str(lines)
             url = re.sub(r'\n', "", url)
             latest = get_latest_version_portableapps(url)
 
-        if count % 3 == 0:
+        if count % 4 == 3:
             app_location = str(lines)
             app_location = re.sub(r'\n', "", app_location)
             version = get_version_number(app_location)
 
-            
-            name_list = name
-            name_list = Prog(name, version, latest)
+        if count % 4 == 0:
+            link = str(lines)
+            link = re.sub(r'\n', "", link)
+                
+            name_list = Prog(name, version, latest, link)
             list_of_prog.append(name_list)
             bar.next()
         count += 1
 f.close()
 
-with open("C:\BATCH\!shit\App\Techspot.txt") as f:
+with open("Techspot.txt") as f:
     for lines in f:
-        if count % 3 == 1:
+        if count % 4 == 1:
             name = str(lines)
             name = re.sub(r'\n', "", name)
         
-        if count % 3 == 2:
+        if count % 4 == 2:
             url = str(lines)
             url = re.sub(r'\n', "", url)
             latest = get_latest_version_techspot(url)
 
-        if count % 3 == 0:
+        if count % 4 == 3:
             app_location = str(lines)
             app_location = re.sub(r'\n', "", app_location)
             version = get_version_number(app_location)
 
-            name_list = name
-            name_list = Prog(name, version, latest)
+        if count % 4 == 0:
+            link = str(lines)
+            link = re.sub(r'\n', "", link)
+            
+            name_list = Prog(name, version, latest, link)
             list_of_prog.append(name_list)
             bar.next()
         count += 1
@@ -183,8 +180,9 @@ for tag in soup.find_all("span", class_="version"):
 app_location = r'C:\PortableApps\Git\git-bash.exe'
 version = get_version_number(app_location)
 
-name_list = name
-name_list = Prog(name, version, latest)
+link = "https://git-scm.com/download/win"
+
+name_list = Prog(name, version, latest, link)
 list_of_prog.append(name_list)
 
 bar.next()
@@ -199,11 +197,13 @@ for tag in soup.find_all("span", itemprop="itemreviewed"):
    latest=re.sub(r" ", "", latest)
    latest=re.sub(r"build", ".", latest)
 
+link = "https://www.guru3d.com/files-details/rtss-rivatuner-statistics-server-download.html"
+
 app_location = r'C:\PortableApps\RivaTuner Statistics Server\RTSS.exe'
 version = get_version_number(app_location)
 
 name_list = name
-name_list = Prog(name, version, latest)
+name_list = Prog(name, version, latest, link)
 list_of_prog.append(name_list)
 
 bar.next()
@@ -219,8 +219,9 @@ for tag in soup.find("a", href=re.compile(r'spotify.*.rar')):
 app_location = r'C:\PortableApps\Spotify\App\Spotify.exe'
 version = get_version_number(app_location)
 
-name_list = name
-name_list = Prog(name, version, latest)
+link = "https://rsload.net/soft/player/34998-spotify.html"
+
+name_list = Prog(name, version, latest, link)
 list_of_prog.append(name_list)
 
 bar.next()
@@ -247,29 +248,12 @@ print(table)
 
 #Menu
 
-menu_count = 1
-
-with open("C:\BATCH\!shit\App\DownloadLinks.txt") as f:
-    for lines in f:
-        if menu_count % 2 == 1:
-            name = str(lines)
-            name = re.sub(r'\n', "", name)
-        
-        if menu_count % 2 == 0:
-            link = str(lines)
-            link = re.sub(r'\n', "", link)
-            name_link = name
-            name_link = Link(name, link)
-            list_of_links.append(name_link)
-
-        menu_count += 1
-f.close()
 
 while True:
     menu_option = input("Type number of program (from 1 to 31). Type (exit) to stop: ")
     if menu_option == "exit":
         break
     menu_option = int(menu_option)
-    url = list_of_links[menu_option - 1].GetLink()
+    url = list_of_prog[menu_option - 1].GetLink()
     webbrowser.open(url, new = 0, autoraise = True)
     print("\n")
