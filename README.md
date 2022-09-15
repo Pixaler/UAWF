@@ -3,7 +3,7 @@ Program, that update my portable apps on Windows (Update Apps Without F@#k)
 
 ## Feature
 - Grab apps version from sites, check version apps on your PC and output this data
-- Now program can open sites that you pointed in DownloadLink.txt. Personal I put in this files web page with download link
+- Now program can open sites. Personal I put in this files web page with download link
 
 ## How create .txt files 
 Program can grub latest version from 3 sources: Github, PortableApps, Techspot. Structure of contets in Github.txt slightly diffrent from PortableApps.txt and Techspot.txt.
