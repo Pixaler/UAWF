@@ -1,3 +1,7 @@
+# v0.3.2
+# Changes
+1. Delete DownloadLinks.txt and move links to main 3 txt files
+
 # v0.3.1
 ## Changes
 1. Now program check, if txt files are avaliable
