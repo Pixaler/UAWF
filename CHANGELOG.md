@@ -1,3 +1,10 @@
+# v0.4
+# Changes
+1. Combine all to single files - Links.txt
+2. Make code more clearer and simplier
+3. Amount of programs now calculate automatically
+4. Programs now select from name
+
 # v0.3.2
 # Changes
 1. Delete DownloadLinks.txt and move links to main 3 txt files
