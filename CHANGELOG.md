@@ -1,3 +1,10 @@
+# v0.5
+# Changes
+1. Bring OOP
+2. Now programs data store in repo.py
+# Fixes
+1. When type correct name, program doesn't output error
+
 # v0.4
 # Changes
 1. Combine all to single files - Links.txt
