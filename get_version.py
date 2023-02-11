@@ -40,8 +40,6 @@ class RetriveInfo:
             latest=re.sub(r'v', "", latest)
             latest=re.sub(r'\n', "", latest)
             latest=re.sub(r' ' , "", latest)
-            latest=re.sub(r'ci/' , "", latest)
-            latest=re.sub(r'-Matrix' , "", latest)
         return latest
 
     def get_latest_version_techspot(self, url):
