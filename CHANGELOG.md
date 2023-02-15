@@ -1,3 +1,10 @@
+# v0.6
+## Changes
+1. Now program read from repo.csv to get value
+2. Now you can add and remove program.
+## Bugs
+1. UX is not the best
+
 # v0.5
 # Changes
 1. Bring OOP

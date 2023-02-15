@@ -2,6 +2,7 @@ from win32com.client import Dispatch
 from urllib.request import Request, urlopen
 import re 
 from bs4 import BeautifulSoup
+import pandas
 
 class RetriveInfo:
     def __init__(self) -> None:
@@ -55,38 +56,35 @@ class InformationProcessor:
     def __init__(self) -> None:
         pass
 
-    def amount_of_prog(self, repo):
+    def amount_of_prog(self, data):
         """Return amount of prog in repo.py files"""
-        amount_of_prog = 0
-        for key in repo:
-            amount_of_prog += len(repo[key])
-        return amount_of_prog
+        amount_of_prog = len(data.index)
+        return amount_of_prog 
 
-    def get_dict(self, repo, bar):
+    def get_dict(self, data, bar):
         """Create dictionary with version and latetst version"""
         list_of_prog = []
-        for key in repo:
-            source = key
-            for program in repo[key]:
-                name = program["name"]
-                url = program["version_link"]
-                if source == "GitHub":
-                    latest = RetriveInfo().get_latest_version_github(url)
-                elif source == "PortableApps":
-                    latest = RetriveInfo().get_latest_version_portableapps(url)
-                else:
-                    latest = RetriveInfo().get_latest_version_techspot(url)
-                app_location = program["path_to_exe"]
-                version = RetriveInfo().get_version_number(app_location)
-                link = program["download_link"]
+        for (index, row) in data.iterrows():
+            source = row["source"]
+            name = row["name"]
+            url = row["version_link"]
+            if source == "GitHub":
+                latest = RetriveInfo().get_latest_version_github(url)
+            elif source == "PortableApps":
+                latest = RetriveInfo().get_latest_version_portableapps(url)
+            else:
+                latest = RetriveInfo().get_latest_version_techspot(url)
+            app_location = row["path_to_exe"]
+            version = RetriveInfo().get_version_number(app_location)
+            link = row["download_link"]
 
-                list_of_prog.append(
-                    {
-                        "name":name,
-                        "version":version,
-                        "latest":latest,
-                        "download_link":link
-                    }
-                ) 
-                bar.next()
+            list_of_prog.append(
+                {
+                    "name":name,
+                    "version":version,
+                    "latest":latest,
+                    "download_link":link
+                }
+            ) 
+            bar.next()
         return list_of_prog 
