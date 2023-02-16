@@ -34,7 +34,7 @@ class RetriveInfo:
 
     def get_latest_version_github(self, repo):
         """Get latest version from latest version page on GitHub"""
-        soup = self.soup_reader("https://github.com" + repo +"/releases/latest")
+        soup = self.soup_reader("https://github.com" + repo + "/releases/latest")
         latest=""
         for tag in soup.find_all(href=re.compile(repo + "/releases/tag")):
             latest=re.sub(r'rel',"",tag.text)

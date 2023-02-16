@@ -1,3 +1,7 @@
+# v0.6.1
+## Changes
+1. Improve UX
+
 # v0.6
 ## Changes
 1. Now program read from repo.csv to get value
