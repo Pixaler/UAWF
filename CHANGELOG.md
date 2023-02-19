@@ -1,3 +1,8 @@
+# v0.6.2
+## Fixes
+1. Now opens one window of browser, insted of two
+2. Program can be launched from any path
+
 # v0.6.1
 ## Changes
 1. Improve UX

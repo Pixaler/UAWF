@@ -9,27 +9,46 @@ import os
 
 
 def main():
+    art = '''
+    ██╗   ██╗ █████╗ ██╗    ██╗███████╗
+    ██║   ██║██╔══██╗██║    ██║██╔════╝
+    ██║   ██║███████║██║ █╗ ██║█████╗  
+    ██║   ██║██╔══██║██║███╗██║██╔══╝  
+    ╚██████╔╝██║  ██║╚███╔███╔╝██║     
+     ╚═════╝ ╚═╝  ╚═╝ ╚══╝╚══╝ ╚═╝     
+    '''
+
     worker = InformationProcessor()
 
     editor = CSV_Editor()
 
-    data = pandas.read_csv("repo.csv", index_col=[0])
+    csv_path = "repo.csv"
+
+    # determine if application is a script file or frozen exe
+    if getattr(sys, 'frozen', False):
+        application_path = os.path.dirname(sys.executable)
+    elif __file__:
+        application_path = os.path.dirname(__file__)
+    
+    REPO = os.path.join(application_path, csv_path)
+
+    data = pandas.read_csv(REPO, index_col=[0])
     
     want_edit = True
     while want_edit:
         os.system('cls')
         print(art)
-        choice = input("Version: 0.6.1\n\na - add new program\nd - delete program\ns - skip\ne - exit program\n\nChoose option: " )
+        choice = input("Version: 0.6.2\n\na - add new program\nd - delete program\ns - skip\ne - exit program\n\nChoose option: " )
         if choice == 'a':
             data = editor.edit_table(data)
             new_data = pandas.DataFrame(data)
             new_data = new_data.reset_index(drop=True)
-            new_data.to_csv("repo.csv")
+            new_data.to_csv(REPO)
         elif choice == 'd':
             data = editor.delete_row(data)
             new_data = pandas.DataFrame(data)
             new_data = new_data.reset_index(drop=True)
-            new_data.to_csv("repo.csv")
+            new_data.to_csv(REPO)
         elif choice == 'e':
             exit()
         elif choice == 's':
@@ -48,36 +67,22 @@ def main():
     bar = IncrementalBar("Collecting data", max = amount)
  
     list_of_prog = worker.get_dict(data, bar) # Create a list of prog
- 
     bar.finish() 
     time.sleep(1)
  
     gui_worker = OutputProcessor()
     gui_worker.create_table(list_of_prog) # Creation of table
- 
+     
      # Menu with download links
     while True:
         print(".\n.")
         menu_option = input(f"Type name of program. Type (exit) to stop: ")
         if menu_option == "exit":
             break
- 
         # Search in dictionary name of program. Make name less sensitive to registry
-        gui_worker.program_in_dict(list_of_prog, menu_option)
-        if not gui_worker.program_in_dict(list_of_prog, menu_option):
+        check = gui_worker.program_in_dict(list_of_prog, menu_option)
+        if not check:
             print(".\n.")
             print(f"Program '{menu_option}' not in list. Please type correct name or add this program to repo.py")
-
-
-
-art = '''
-██╗   ██╗ █████╗ ██╗    ██╗███████╗
-██║   ██║██╔══██╗██║    ██║██╔════╝
-██║   ██║███████║██║ █╗ ██║█████╗  
-██║   ██║██╔══██║██║███╗██║██╔══╝  
-╚██████╔╝██║  ██║╚███╔███╔╝██║     
- ╚═════╝ ╚═╝  ╚═╝ ╚══╝╚══╝ ╚═╝     
-'''
-
 if __name__ == "__main__":
     main()
