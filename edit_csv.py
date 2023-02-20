@@ -40,9 +40,8 @@ class CSV_Editor():
     def delete_row(self, data):
         """Delete program from csv table"""
         correct_name = False
-        os.system('cls')
         while correct_name == False:
-            print(data.name)
+            self.show_list(data)
             name = input("\n\nType name of program that you want to delete: ")
             for (index, row) in data.iterrows():
                 if name == row["name"]:
@@ -56,6 +55,7 @@ class CSV_Editor():
                     else:
                         return data
 
-
-
-        
+    def show_list(self, data):
+        """Show name column value"""
+        os.system('cls')
+        return print(data.name)

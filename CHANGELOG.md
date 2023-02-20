@@ -1,3 +1,9 @@
+# v0.6.3
+## Changes
+1. And menu option that show list of programs
+## Fixes
+1. On first start if repo.csv is empty, create it with one program - UAWF
+
 # v0.6.2
 ## Fixes
 1. Now opens one window of browser, insted of two

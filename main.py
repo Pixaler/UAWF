@@ -5,6 +5,7 @@ from get_version import InformationProcessor
 from output_processor import OutputProcessor
 from edit_csv import CSV_Editor
 import pandas
+import sys
 import os
 
 
@@ -31,14 +32,27 @@ def main():
         application_path = os.path.dirname(__file__)
     
     REPO = os.path.join(application_path, csv_path)
-
-    data = pandas.read_csv(REPO, index_col=[0])
     
+    try:
+        data = pandas.read_csv(REPO, index_col=[0])
+    except FileNotFoundError:
+        first_repo={"name":"UAWF", "version_link":"/Pixaler/UAWF", "path_to_exe": "C:\\PortableApps\\UAWF\\uawf.exe", "download_link": "https://github.com/Pixaler/UAWF/releases/latest", "source":"GitHub" }
+        new_data = pandas.DataFrame(first_repo, index=[0])
+        new_data.to_csv(csv_path)
+    finally:
+        data = pandas.read_csv(REPO, index_col=[0])
     want_edit = True
     while want_edit:
         os.system('cls')
         print(art)
-        choice = input("Version: 0.6.2\n\na - add new program\nd - delete program\ns - skip\ne - exit program\n\nChoose option: " )
+        choice = input('''Version: 0.6.3\n
+a - add new program
+d - delete program
+s - show list
+l - launch program
+e - exit program\n
+
+Choose option: ''' )
         if choice == 'a':
             data = editor.edit_table(data)
             new_data = pandas.DataFrame(data)
@@ -49,15 +63,16 @@ def main():
             new_data = pandas.DataFrame(data)
             new_data = new_data.reset_index(drop=True)
             new_data.to_csv(REPO)
+        elif choice == 's':
+            editor.show_list(data)
         elif choice == 'e':
             exit()
-        elif choice == 's':
+        elif choice == 'l':
             want_edit = False
             break
         else:
             print("Wrong options!")
             pass
-        os.system('cls')
         go_on = input("\n\nYou want to edit again? (y/n): ")
         if go_on == 'n':
             want_edit = False
