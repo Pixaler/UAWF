@@ -47,7 +47,7 @@ class RetriveInfo:
         """Get latest version from page of Techspot.com with download button"""
         soup = self.soup_reader(url)
         latest=""
-        for tag in soup.find_all("span", itemprop=re.compile("softwareVersion")):
+        for tag in soup.find_all("div", class_="subver"):
             latest=re.sub(r'\n', "", tag.text)
             latest=re.sub(r' ' , "", latest)
         return latest
