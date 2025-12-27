@@ -1,14 +1,16 @@
 from win32com.client import Dispatch
 from urllib.request import Request, urlopen
+from playwright.sync_api import sync_playwright
 import re 
 from bs4 import BeautifulSoup
 import pandas
+import time
 
 class RetriveInfo:
     def __init__(self) -> None:
         pass
 
-    def soup_reader(self, url):        
+    def soup_reader(self, url): 
         """Make url ready for Soup"""
         request_site = Request(url, headers={"User-Agent": "Mozilla/5.0"})
         page = urlopen(request_site)
@@ -45,12 +47,38 @@ class RetriveInfo:
 
     def get_latest_version_techspot(self, url):
         """Get latest version from page of Techspot.com with download button"""
-        soup = self.soup_reader(url)
-        latest=""
-        for tag in soup.find_all("div", class_="subver"):
-            latest=re.sub(r'\n', "", tag.text)
-            latest=re.sub(r' ' , "", latest)
-        return latest
+        with sync_playwright() as p:
+        # Launch browser 
+            browser = p.chromium.launch(headless=True)
+        
+        # Create context and User-Agent
+            context = browser.new_context(
+                viewport={'width': 1920, 'height': 1080},
+                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"
+            )
+        
+            page = context.new_page()
+        
+            try:
+            # Got to page and wait
+                page.goto(url, wait_until="networkidle")
+                time.sleep(2) 
+            
+            # Gethtml HTML
+                content = page.content()
+                soup = BeautifulSoup(content, 'lxml')
+            
+                tag = soup.find("div", class_="subver")
+                if tag:
+                    latest = tag.get_text(strip=True).replace("Version", "").strip()
+                else:
+                    print(0)
+                
+            except Exception as e:
+                print(f"Error: {e}")
+            finally:
+                browser.close()
+            return latest
 
 class InformationProcessor:
     def __init__(self) -> None:

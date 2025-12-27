@@ -2,4 +2,5 @@ pandas
 bs4
 progress
 pywin32
-lsml
+lxml
+prettytable
