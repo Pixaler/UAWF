@@ -5,6 +5,7 @@ import re
 from bs4 import BeautifulSoup
 import pandas
 import time
+import os
 
 class RetriveInfo:
     def __init__(self) -> None:
@@ -19,10 +20,14 @@ class RetriveInfo:
         return soup
 
     def get_version_number(self, app_location):
-            """Obtain latest version of app that locate in provided location on Windows"""
+        """Obtain latest version of app that locate in provided location on Windows"""
+        if os.path.exists(app_location):
             parser = Dispatch("Scripting.FileSystemObject")
             version = parser.GetFileVersion(app_location)
-            return version
+        else:
+            print("\nApp location is incorrect or not exist:", app_location)
+            version = "Not found"
+        return version
 
     def get_latest_version_portableapps(self, url):
         """Get latest version from link PortableApps.com on page with download button"""
@@ -85,7 +90,7 @@ class InformationProcessor:
         pass
 
     def amount_of_prog(self, data):
-        """Return amount of prog in repo.py files"""
+        """Return amount of prog in repo.csv files"""
         amount_of_prog = len(data.index)
         return amount_of_prog 
 
