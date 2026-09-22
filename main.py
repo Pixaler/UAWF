@@ -91,13 +91,16 @@ Choose option: ''' )
      # Menu with download links
     while True:
         print(".\n.")
-        menu_option = input(f"Type name of program. Type (exit) to stop: ")
+        menu_option = input(f"Type number. Type 'exit' to stop: ")
         if menu_option == "exit":
             break
-        # Search in dictionary name of program. Make name less sensitive to registry
-        check = gui_worker.program_in_dict(list_of_prog, menu_option)
-        if not check:
-            print(".\n.")
-            print(f"Program '{menu_option}' not in list. Please type correct name or add this program to repo.py")
+        # Change input to integer and check if it correct
+        try:
+            menu_option = int(menu_option)
+            gui_worker.program_in_dict(list_of_prog, menu_option)
+        except ValueError:
+            print("Value are not in list. Please try again.")
+
+
 if __name__ == "__main__":
     main()

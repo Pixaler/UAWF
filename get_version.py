@@ -3,7 +3,6 @@ from urllib.request import Request, urlopen
 from playwright.sync_api import sync_playwright
 import re 
 from bs4 import BeautifulSoup
-import pandas
 import time
 import os
 
@@ -76,6 +75,7 @@ class RetriveInfo:
                 tag = soup.find("div", class_="subver")
                 if tag:
                     latest = tag.get_text(strip=True).replace("Version", "").strip()
+                    return latest
                 else:
                     print(0)
                 
@@ -83,7 +83,6 @@ class RetriveInfo:
                 print(f"Error: {e}")
             finally:
                 browser.close()
-            return latest
 
 class InformationProcessor:
     def __init__(self) -> None:
@@ -95,7 +94,7 @@ class InformationProcessor:
         return amount_of_prog 
 
     def get_dict(self, data, bar):
-        """Create dictionary with version and latetst version"""
+        """Create dictionary with version and latest version"""
         list_of_prog = []
         for (index, row) in data.iterrows():
             source = row["source"]
@@ -113,6 +112,7 @@ class InformationProcessor:
 
             list_of_prog.append(
                 {
+                    "index":index,
                     "name":name,
                     "version":version,
                     "latest":latest,
