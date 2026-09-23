@@ -1,7 +1,7 @@
 import time
 from pandas._libs.hashtable import duplicated
 from progress.bar import IncrementalBar
-from get_version import InformationProcessor
+from get_version import InformationProcessor, RetriveInfo
 from output_processor import OutputProcessor
 from edit_csv import CSV_Editor
 import pandas
@@ -32,6 +32,7 @@ def main():
         application_path = os.path.dirname(__file__)
     
     REPO = os.path.join(application_path, csv_path)
+    VERSION_APP = RetriveInfo().get_version_number(sys.executable)
     
     try:
         data = pandas.read_csv(REPO, index_col=[0])
@@ -45,7 +46,7 @@ def main():
     while want_edit:
         os.system('cls')
         print(art)
-        choice = input('''Version: 0.6.3\n
+        choice = input('''Version: {} \n
 a - add new program
 d - delete program
 s - show list
@@ -53,7 +54,7 @@ l - launch program
 t - edit table
 e - exit program\n
 
-Choose option: ''' )
+Choose option: '''.format(VERSION_APP))
         if choice == 'a':
             data = editor.add_new_program(data)
             new_data = pandas.DataFrame(data)
@@ -67,7 +68,7 @@ Choose option: ''' )
         elif choice == 's':
             editor.show_list(data)
         elif choice == 'e':
-            exit()
+            sys.exit()
         elif choice == 'l':
             want_edit = False
             break
