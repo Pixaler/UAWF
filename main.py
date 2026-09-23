@@ -50,11 +50,12 @@ a - add new program
 d - delete program
 s - show list
 l - launch program
+t - edit table
 e - exit program\n
 
 Choose option: ''' )
         if choice == 'a':
-            data = editor.edit_table(data)
+            data = editor.add_new_program(data)
             new_data = pandas.DataFrame(data)
             new_data = new_data.reset_index(drop=True)
             new_data.to_csv(REPO)
@@ -70,6 +71,11 @@ Choose option: ''' )
         elif choice == 'l':
             want_edit = False
             break
+        elif choice == 't':
+            data = editor.edit_program(data)
+            new_data = pandas.DataFrame(data)
+            new_data = new_data.reset_index(drop=True)
+            new_data.to_csv(REPO)
         else:
             print("Wrong options!")
             pass
