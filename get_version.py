@@ -1,10 +1,8 @@
 from win32com.client import Dispatch
 from urllib.request import Request, urlopen
-from playwright.sync_api import sync_playwright
-import re 
 from bs4 import BeautifulSoup
-import time
 import os
+import re
 
 class RetriveInfo:
     def __init__(self) -> None:
@@ -31,11 +29,10 @@ class RetriveInfo:
     def get_latest_version_portableapps(self, url):
         """Get latest version from link PortableApps.com on page with download button"""
         soup = self.soup_reader(url)
-        latest=""
-        for tag in soup.find_all("p",class_="download-info"):
-            latest=re.sub(r"for.*Details$", "", tag.text)
-            latest=re.sub(r"Version", "", latest)
-            latest=re.sub(r" ", "", latest)
+        tag = soup.find('p', class_="download-info") 
+        text = tag.get_text()
+        latest = re.search(r'\d+(?:\.\d+)+', text).group(0)
+
         return latest
 
     def get_latest_version_github(self, repo):
@@ -49,39 +46,13 @@ class RetriveInfo:
 
     def get_latest_version_techspot(self, url):
         """Get latest version from page of Techspot.com with download button"""
-        with sync_playwright() as p:
-        # Launch browser 
-            browser = p.chromium.launch(headless=True)
-        
-        # Create context and User-Agent
-            context = browser.new_context(
-                viewport={'width': 1920, 'height': 1080},
-                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"
-            )
-        
-            page = context.new_page()
-        
-            try:
-            # Got to page and wait
-                page.goto(url, wait_until="networkidle")
-                time.sleep(2) 
-            
-            # Gethtml HTML
-                content = page.content()
-                soup = BeautifulSoup(content, 'lxml')
-            
-                tag = soup.find("div", class_="subver")
-                if tag:
-                    latest = tag.get_text(strip=True).replace("Version", "").strip()
-                    return latest
-                else:
-                    print(0)
-                
-            except Exception as e:
-                print(f"Error: {e}")
-            finally:
-                browser.close()
+        soup = self.soup_reader(url)
+        tag = soup.find('div', class_="subver")
+        text = tag.get_text()
+        latest = re.search(r'\d+(?:\.\d+)+', text).group(0)
 
+        return latest   
+        
 class InformationProcessor:
     def __init__(self) -> None:
         pass

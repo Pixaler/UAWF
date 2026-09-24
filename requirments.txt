@@ -4,4 +4,3 @@ progress
 pywin32
 lxml
 prettytable
-playwright
