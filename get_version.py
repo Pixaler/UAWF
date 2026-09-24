@@ -41,12 +41,10 @@ class RetriveInfo:
     def get_latest_version_github(self, repo):
         """Get latest version from latest version page on GitHub"""
         soup = self.soup_reader("https://github.com" + repo + "/releases/latest")
-        latest=""
-        for tag in soup.find_all(href=re.compile(repo + "/releases/tag")):
-            latest=re.sub(r'rel',"",tag.text)
-            latest=re.sub(r'v', "", latest)
-            latest=re.sub(r'\n', "", latest)
-            latest=re.sub(r' ' , "", latest)
+        tag = soup.find('a',href=re.compile(repo + "/releases/tag"))
+        text = tag.get_text()
+        latest = re.search(r'\d+(?:\.\d+)+', text).group(0)
+
         return latest
 
     def get_latest_version_techspot(self, url):
