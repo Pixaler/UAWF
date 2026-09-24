@@ -9,6 +9,12 @@ import sys
 import os
 
 
+def save_data_to_csv(data, REPO):
+    new_data = pandas.DataFrame(data)
+    new_data = new_data.reset_index(drop=True)
+    new_data.to_csv(REPO)
+        
+
 def main():
     art = '''
     ██╗   ██╗ █████╗ ██╗    ██╗███████╗
@@ -42,47 +48,36 @@ def main():
         new_data.to_csv(csv_path)
     finally:
         data = pandas.read_csv(REPO, index_col=[0])
-    want_edit = True
-    while want_edit:
-        os.system('cls')
-        print(art)
-        choice = input('''Version: {} \n
-a - add new program
-d - delete program
-s - show list
-l - launch program
-t - edit table
-e - exit program\n
 
-Choose option: '''.format(VERSION_APP))
-        if choice == 'a':
+    stay_in_menu = True
+    while stay_in_menu:
+        
+        os.system('cls')
+
+        print(art)
+        print("Version: {}\n".format(VERSION_APP))
+        editor.main_menu()
+        
+        choice = editor.check_answer(len(editor.main_menu_list), "\nChoose your option: ")
+        selected_option = editor.main_menu_list[choice-1]
+
+        if selected_option == 'add new program':
             data = editor.add_new_program(data)
-            new_data = pandas.DataFrame(data)
-            new_data = new_data.reset_index(drop=True)
-            new_data.to_csv(REPO)
-        elif choice == 'd':
+            save_data_to_csv(data, REPO)
+        elif selected_option == 'delete program':
             data = editor.delete_row(data)
-            new_data = pandas.DataFrame(data)
-            new_data = new_data.reset_index(drop=True)
-            new_data.to_csv(REPO)
-        elif choice == 's':
+            save_data_to_csv(data, REPO)
+        elif selected_option == 'show list':
             editor.show_list(data)
-        elif choice == 'e':
-            sys.exit()
-        elif choice == 'l':
-            want_edit = False
-            break
-        elif choice == 't':
+        elif selected_option == 'edit table':
             data = editor.edit_program(data)
-            new_data = pandas.DataFrame(data)
-            new_data = new_data.reset_index(drop=True)
-            new_data.to_csv(REPO)
+            save_data_to_csv(data, REPO)
+        elif selected_option == 'start update':
+            stay_in_menu = False
+            break
         else:
-            print("Wrong options!")
-            pass
-        go_on = input("\n\nYou want to edit again? (y/n): ")
-        if go_on == 'n':
-            want_edit = False
+            sys.exit()
+        input("\n\nEnter any button to continue...")
 
     amount = worker.amount_of_prog(data) # Amount of program
     os.system('cls')

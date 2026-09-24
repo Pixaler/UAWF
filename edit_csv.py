@@ -3,9 +3,16 @@ import re
 import os
 
 class CSV_Editor():
+    
+    main_menu_list = ['show list','start update' ,'add new program', 'delete program', 'edit table', 'exit']  
+
 
     def __init__(self) -> None:
         pass
+
+    def main_menu(self):
+        for option in self.main_menu_list:
+            print(self.main_menu_list.index(option)+1, '-', option)
 
     def question_yn (self, message):
         while True:
@@ -20,7 +27,6 @@ class CSV_Editor():
             user_choice = input(message)
             try: 
                 user_choice = int(user_choice)
-                print(user_choice)
                 if user_choice > max_input:
                     print("Type correct number.")
                 else:
