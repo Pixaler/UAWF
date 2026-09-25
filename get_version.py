@@ -1,57 +1,63 @@
+from ssl import get_default_verify_paths
+from urllib.error import HTTPError
+
 from win32com.client import Dispatch
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 import os
 import re
 
+
+class ProgramData:
+    def __init__(self, name, download_link, current_version, latest_version):
+        self.name = name
+        self.download_link = download_link
+        self.current_version = current_version
+        self.latest_version = latest_version
+
+
 class RetriveInfo:
     def __init__(self) -> None:
         pass
 
-    def soup_reader(self, url): 
-        """Make url ready for Soup"""
-        request_site = Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        page = urlopen(request_site)
-        html = page.read().decode("ansi")
-        soup = BeautifulSoup(html, 'lxml')
-        return soup
-
-    def get_version_number(self, app_location):
+    def get_current_version(self, app_location):
         """Obtain latest version of app that locate in provided location on Windows"""
         if os.path.exists(app_location):
             parser = Dispatch("Scripting.FileSystemObject")
-            version = parser.GetFileVersion(app_location)
+            current_version = parser.GetFileVersion(app_location)
         else:
             print("\nApp location is incorrect or not exist:", app_location)
-            version = "Not found"
-        return version
+            current_version = "Not found"
+        
+        return current_version 
 
-    def get_latest_version_portableapps(self, url):
-        """Get latest version from link PortableApps.com on page with download button"""
-        soup = self.soup_reader(url)
-        tag = soup.find('p', class_="download-info") 
+    def soup_reader(self, url): 
+        """Make url ready for Soup"""
+        request_site = Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        try:
+            page = urlopen(request_site)
+            html = page.read().decode("ansi")
+            soup = BeautifulSoup(html, 'lxml')
+            return soup
+        except HTTPError:
+            print(HTTPError)
+
+    def get_latest_version(self, version_link, source):
+        soup = self.soup_reader(version_link)
+        if source == 'PortableApps':
+            tag = soup.find('p', class_="download-info") 
+        elif source == 'TechSpot':
+            tag = soup.find('div', class_="subver")
+        else:
+            new_version_link = version_link.removeprefix("https://github.com")
+            new_version_link = new_version_link.replace("/latest", "/tag")
+            tag = soup.find('a',href=re.compile(new_version_link))
         text = tag.get_text()
         latest = re.search(r'\d+(?:\.\d+)+', text).group(0)
-
+        
         return latest
 
-    def get_latest_version_github(self, repo):
-        """Get latest version from latest version page on GitHub"""
-        soup = self.soup_reader("https://github.com" + repo + "/releases/latest")
-        tag = soup.find('a',href=re.compile(repo + "/releases/tag"))
-        text = tag.get_text()
-        latest = re.search(r'\d+(?:\.\d+)+', text).group(0)
 
-        return latest
-
-    def get_latest_version_techspot(self, url):
-        """Get latest version from page of Techspot.com with download button"""
-        soup = self.soup_reader(url)
-        tag = soup.find('div', class_="subver")
-        text = tag.get_text()
-        latest = re.search(r'\d+(?:\.\d+)+', text).group(0)
-
-        return latest   
         
 class InformationProcessor:
     def __init__(self) -> None:
@@ -66,27 +72,11 @@ class InformationProcessor:
         """Create dictionary with version and latest version"""
         list_of_prog = []
         for (index, row) in data.iterrows():
-            source = row["source"]
-            name = row["name"]
-            url = row["version_link"]
-            if source == "GitHub":
-                latest = RetriveInfo().get_latest_version_github(url)
-            elif source == "PortableApps":
-                latest = RetriveInfo().get_latest_version_portableapps(url)
-            else:
-                latest = RetriveInfo().get_latest_version_techspot(url)
-            app_location = row["path_to_exe"]
-            version = RetriveInfo().get_version_number(app_location)
-            link = row["download_link"]
+            current_version = RetriveInfo().get_current_version(row["path_to_exe"])
+            latest_version = RetriveInfo().get_latest_version(row["version_link"], row["source"])
+            program = ProgramData(row["name"], row["download_link"], current_version, latest_version)            
 
-            list_of_prog.append(
-                {
-                    "index":index,
-                    "name":name,
-                    "version":version,
-                    "latest":latest,
-                    "download_link":link
-                }
-            ) 
+            list_of_prog.append(program) 
             bar.next()
+
         return list_of_prog 

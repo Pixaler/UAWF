@@ -38,7 +38,7 @@ def main():
         application_path = os.path.dirname(__file__)
     
     REPO = os.path.join(application_path, csv_path)
-    VERSION_APP = RetriveInfo().get_version_number(sys.executable)
+    VERSION_APP = RetriveInfo().get_current_version(sys.executable)
     
     try:
         data = pandas.read_csv(REPO, index_col=[0])
