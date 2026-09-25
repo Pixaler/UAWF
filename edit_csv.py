@@ -23,16 +23,20 @@ class CSV_Editor():
                 print("Please type 'y' or 'n'")
         
     def check_answer(self, max_input, message):
+        # Methods check user choice with its range. If user type exit it return 'exit'
         while True:
             user_choice = input(message)
             try: 
                 user_choice = int(user_choice)
-                if user_choice > max_input:
-                    print("Type correct number.")
+                if user_choice > max_input or user_choice <= 0:
+                    print("Your choice is out of range.")
                 else:
                     return user_choice
             except:
-                print("Type correct values.")
+                if user_choice == 'exit':
+                    return 'exit'
+                else:
+                    print("Choose number from 1 to {} .".format(max_input))
 
     def edit_program(self, data):
         program_not_chosed = True

@@ -93,16 +93,11 @@ def main():
      # Menu with download links
     while True:
         print(".\n.")
-        menu_option = input(f"Type number. Type 'exit' to stop: ")
-        if menu_option == "exit":
+        menu_option = editor.check_answer(len(list_of_prog), f"Type number. Type 'exit' to stop: ")
+        if menu_option == 'exit':
             break
-        # Change input to integer and check if it correct
-        try:
-            menu_option = int(menu_option)
+        else:
             gui_worker.program_in_dict(list_of_prog, menu_option)
-        except ValueError:
-            print("Value are not in list. Please try again.")
-
 
 if __name__ == "__main__":
     main()
