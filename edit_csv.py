@@ -26,6 +26,8 @@ class CSV_Editor():
         # Methods check user choice with its range. If user type exit it return 'exit'
         while True:
             user_choice = input(message)
+            if user_choice == 'exit':
+                return 0
             try: 
                 user_choice = int(user_choice)
                 if user_choice > max_input or user_choice < 0:
@@ -92,15 +94,14 @@ class CSV_Editor():
         user_choice = int(input("Source:\n\n1 - GitHub\n2 - PortableApps\n3 - Techspotn\n\nType (1, 2 or 3): "))
         if user_choice == 1:
             source = "GitHub"
-            version_link = input("\n\n\nType GitHub repo link\n\nYour input: ")
-            version_link = re.sub(r'https://github.com', "", version_link)
-            download_link = "https://github.com" + version_link + "/release/latest"
+            version_link = input("\n\n\nType GitHub repo link\n\nYour input: ") + "/releases/latest"
+            download_link = version_link
         elif user_choice == 2:
             source = "PortableApps"
             version_link = input("\n\n\nPaste link with download button from PortableApps\n\nYour input: ")
             download_link = version_link
         else:
-            source = "Techspot"
+            source = "TechSpot"
             version_link = input("\n\n\nPaste link with download button from TechSpot\n\nYour input: ")
             download_link = input("\n\n\nProgram just open link in browser.\n\nType download link: ")
 
