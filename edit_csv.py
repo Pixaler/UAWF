@@ -28,15 +28,12 @@ class CSV_Editor():
             user_choice = input(message)
             try: 
                 user_choice = int(user_choice)
-                if user_choice > max_input or user_choice <= 0:
+                if user_choice > max_input or user_choice < 0:
                     print("Your choice is out of range.")
                 else:
                     return user_choice
             except:
-                if user_choice == 'exit':
-                    return 'exit'
-                else:
-                    print("Choose number from 1 to {} .".format(max_input))
+                print("Choose number from 1 to {} .".format(max_input))
 
     def edit_program(self, data):
         program_not_chosed = True

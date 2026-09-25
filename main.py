@@ -94,7 +94,7 @@ def main():
     while True:
         print(".\n.")
         menu_option = editor.check_answer(len(list_of_prog), f"Type number. Type 'exit' to stop: ")
-        if menu_option == 'exit':
+        if menu_option == 0:
             break
         else:
             gui_worker.program_in_dict(list_of_prog, menu_option)
