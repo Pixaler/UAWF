@@ -7,7 +7,7 @@ from edit_csv import CSV_Editor
 import pandas
 import sys
 import os
-
+import webbrowser
 
 def save_data_to_csv(data, REPO):
     new_data = pandas.DataFrame(data)
@@ -97,7 +97,8 @@ def main():
         if menu_option == 0:
             break
         else:
-            gui_worker.program_in_dict(list_of_prog, menu_option)
+            down_link = list_of_prog[menu_option].download_link
+            webbrowser.open(down_link, new=0, autoraise = True)
 
 if __name__ == "__main__":
     main()
