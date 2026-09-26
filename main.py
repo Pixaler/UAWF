@@ -8,10 +8,6 @@ import sys
 import os
 import webbrowser
 
-def save_data_to_csv(data, REPO):
-    new_data = pandas.DataFrame(data)
-    new_data = new_data.reset_index(drop=True)
-    new_data.to_csv(REPO)
         
 
 def main():
@@ -61,19 +57,13 @@ def main():
         selected_option = editor.main_menu_list[choice-1]
 
         if selected_option == 'add new program':
-            data = editor.add_new_program(data)
-            save_data_to_csv(data, REPO)
-            data = pandas.read_csv(REPO, index_col=[0])
+            data = editor.add_new_program(data, REPO)
         elif selected_option == 'delete program':
-            data = editor.delete_row(data)
-            save_data_to_csv(data, REPO)
-            data = pandas.read_csv(REPO, index_col=[0])
+            data = editor.delete_row(data, REPO)
         elif selected_option == 'show list':
             editor.show_list(data)
         elif selected_option == 'edit table':
-            data = editor.edit_program(data)
-            save_data_to_csv(data, REPO)
-            data = pandas.read_csv(REPO, index_col=[0])
+            data = editor.edit_program(data, REPO)
         elif selected_option == 'start update':
             stay_in_menu = False
             break
