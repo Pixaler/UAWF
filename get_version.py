@@ -42,11 +42,11 @@ class RetriveInfo:
         except HTTPError:
             print(HTTPError)
 
-    def get_latest_version(self, version_link, source):
+    def get_latest_version(self, version_link):
         soup = self.soup_reader(version_link)
-        if source == 'PortableApps':
+        if version_link.find("portableapps") > 0:
             tag = soup.find('p', class_="download-info") 
-        elif source == 'TechSpot':
+        elif version_link.find("techspot") > 0:
             tag = soup.find('div', class_="subver")
         else:
             new_version_link = version_link.removeprefix("https://github.com")
@@ -73,7 +73,7 @@ class InformationProcessor:
         list_of_prog = []
         for (index, row) in data.iterrows():
             current_version = RetriveInfo().get_current_version(row["path_to_exe"])
-            latest_version = RetriveInfo().get_latest_version(row["version_link"], row["source"])
+            latest_version = RetriveInfo().get_latest_version(row["version_link"])
             program = ProgramData(row["name"], row["download_link"], current_version, latest_version)            
 
             list_of_prog.append(program) 

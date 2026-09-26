@@ -91,28 +91,32 @@ class CSV_Editor():
         name = input("\n\nType name of program: ")
 
         # User choice of source of app
-        user_choice = int(input("Source:\n\n1 - GitHub\n2 - PortableApps\n3 - Techspotn\n\nType (1, 2 or 3): "))
-        if user_choice == 1:
-            source = "GitHub"
-            version_link = input("\n\n\nType GitHub repo link\n\nYour input: ") + "/releases/latest"
-            download_link = version_link
-        elif user_choice == 2:
-            source = "PortableApps"
-            version_link = input("\n\n\nPaste link with download button from PortableApps\n\nYour input: ")
-            download_link = version_link
-        else:
-            source = "TechSpot"
-            version_link = input("\n\n\nPaste link with download button from TechSpot\n\nYour input: ")
-            download_link = input("\n\n\nProgram just open link in browser.\n\nType download link: ")
+        print("""Type link for latest version 
+                GitHub - Type link of repository. Example: https://github.com/Pixaler/UAWF\n
+                PortableApps - Type link with download button. Example: https://portableapps.com/apps/development/gvim_portable\n
+                Techspot - Type link with donwload button. Example: https://www.techspot.com/downloads/2879-autoruns.html\n\n""")
+        version_link_not_correct = True
+        while version_link_not_correct:
+            version_link = input("Type your link: ")
+            if  version_link.find("https://github.com/") == 1:
+                version_link = version_link + "/releases/latest"
+                download_link = version_link
+            elif version_link.find("https://portableapps/") == 1:
+                download_link = version_link
+            elif version_link.find("https://www.techspot/downloads/") == 1:
+                download_link = input("\n\nType download link: ")
+            else: 
+                print("\n\nPlease check that link in right form")
+                
 
         path_to_exe = input("\n\n\nFrom this path program try to find exe and read version.\n\nType path to exe files: ")
 
-        new_row = pandas.DataFrame({"name": name,"version_link": version_link,"path_to_exe": path_to_exe,"download_link": download_link,"source": source}, index = [data.index[-1]+1])
+        new_row = pandas.DataFrame({"name": name,"version_link": version_link,"path_to_exe": path_to_exe,"download_link": download_link}, index = [data.index[-1]+1])
 
         print("\n\n\nYour final data:")
         print("\n")
         print(new_row)
-        confirmation = input("\n\n\nAre you cofirm addtion of new program?\ny - for yes\nn - for no\n\nYour choice: ")
+        confirmation = self.question_yn("\n\n\nAre you cofirm addtion of new program?\ny - for yes\nn - for no\n\nYour choice: ")
 
         if confirmation == 'y':
             data = pandas.concat([data, new_row], axis = 0, ignore_index=True)
