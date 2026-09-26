@@ -1,5 +1,4 @@
 import pandas
-import re
 import os
 
 class CSV_Editor():
@@ -129,18 +128,15 @@ class CSV_Editor():
         correct_name = False
         while correct_name == False:
             self.show_list(data)
-            name = input("\n\nType name of program that you want to delete: ")
-            for (index, row) in data.iterrows():
-                if name == row["name"]:
-                    print("\n\n")
-                    print(row)
-                    confirmation = input("\n\nAre you cofirm deletion of program?\ny - for yes\nn - for no\nYour choice: ")
-                    if confirmation == 'y':
-                        data = data.drop(index = [index])
-                        print("Successfuly deleted")
-                        return data
-                    else:
-                        return data
+            program_to_delete = self.check_answer(data.index[-1], "\n\nType name of program that you want to delete: ")
+            print(data.iloc[program_to_delete])
+            confirmation = input("\n\nAre you cofirm deletion of program?\ny - for yes\nn - for no\nYour choice: ")
+            if confirmation == 'y':
+                data = data.drop(index = program_to_delete)
+                print("Successfuly deleted")
+                return data
+            else:
+                return data
 
     def show_list(self, data):
         """Show DataFrame value"""
