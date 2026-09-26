@@ -89,18 +89,25 @@ def main():
     bar.finish() 
     time.sleep(1)
  
-    gui_worker = OutputProcessor()
-    gui_worker.create_table(list_of_prog) # Creation of table
-     
-     # Menu with download links
-    while True:
-        print(".\n.")
-        menu_option = editor.check_answer(len(list_of_prog), f"Type number. Type 'exit' to stop: ")
-        if menu_option == 0:
-            break
-        else:
-            down_link = list_of_prog[menu_option].download_link
+
+    print(f"   {len(list_of_prog)} updates are avaliable\n")
+    update_all = CSV_Editor().question_yn("\n Want to open all links: ")
+    if update_all == 'y':
+        for prog in list_of_prog:
+            down_link = prog.download_link
             webbrowser.open(down_link, new=0, autoraise = True)
+    else: 
+        # Menu with download links
+        gui_worker = OutputProcessor()
+        gui_worker.create_table(list_of_prog) # Creation of table
+        while True:
+            print(".\n.")
+            menu_option = editor.check_answer(len(list_of_prog), f"Type number. Type 'exit' to stop: ")
+            if menu_option == 0:
+                break
+            else:
+                down_link = list_of_prog[menu_option].download_link
+                webbrowser.open(down_link, new=0, autoraise = True)
 
 if __name__ == "__main__":
     main()
