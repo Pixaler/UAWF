@@ -9,6 +9,13 @@ class CSV_Editor():
     def __init__(self) -> None:
         pass
 
+    def save_data_to_csv(self, data, REPO):
+        new_data = pandas.DataFrame(data)
+        new_data = new_data.reset_index(drop=True)
+        new_data.to_csv(REPO)
+        updated_data = pandas.read_csv(REPO, index_col=[0])
+        return updated_data
+
     def main_menu(self):
         for option in self.main_menu_list:
             print(self.main_menu_list.index(option)+1, '-', option)
@@ -36,7 +43,7 @@ class CSV_Editor():
             except:
                 print("Choose number from 1 to {} .".format(max_input))
 
-    def edit_program(self, data):
+    def edit_program(self, data, REPO):
         program_not_chosed = True
         while program_not_chosed:
             self.show_list(data)
@@ -53,6 +60,7 @@ class CSV_Editor():
             else:
                 back = self.question_yn("Return to menu?(y/n): ") 
                 if back == 'y':
+                    self.save_data_to_csv(data, REPO)
                     return data
                 else:
                     continue
@@ -81,10 +89,12 @@ class CSV_Editor():
             return data
         else:
             data.at[user_choice, column_list[chosed_column - 1]] = backup_value
-            return data
+
+        updated_data = self.save_data_to_csv(data, REPO)
+        return updated_data
 
             
-    def add_new_program(self, data):
+    def add_new_program(self, data, REPO):
         """Add new program to csv table"""
         os.system('cls')
         name = input("\n\nType name of program: ")
@@ -97,13 +107,16 @@ class CSV_Editor():
         version_link_not_correct = True
         while version_link_not_correct:
             version_link = input("Type your link: ")
-            if  version_link.find("https://github.com/") == 1:
+            if  version_link.strip().find("https://github.com") == 0:
                 version_link = version_link + "/releases/latest"
                 download_link = version_link
-            elif version_link.find("https://portableapps/") == 1:
+                version_link_not_correct = False
+            elif version_link.strip().find("https://portableapps") == 0:
                 download_link = version_link
-            elif version_link.find("https://www.techspot/downloads/") == 1:
+                version_link_not_correct = False
+            elif version_link.find("https://www.techspot/downloads") == 0:
                 download_link = input("\n\nType download link: ")
+                version_link_not_correct = False
             else: 
                 print("\n\nPlease check that link in right form")
                 
@@ -119,11 +132,11 @@ class CSV_Editor():
 
         if confirmation == 'y':
             data = pandas.concat([data, new_row], axis = 0, ignore_index=True)
-            return data
-        else:
-            return data
 
-    def delete_row(self, data):
+        updated_data = self.save_data_to_csv(data, REPO)
+        return updated_data   
+
+    def delete_row(self, data, REPO):
         """Delete program from csv table"""
         correct_name = False
         while correct_name == False:
@@ -134,9 +147,8 @@ class CSV_Editor():
             if confirmation == 'y':
                 data = data.drop(index = program_to_delete)
                 print("Successfuly deleted")
-                return data
-            else:
-                return data
+            updated_data = self.save_data_to_csv(data, REPO)
+            return updated_data
 
     def show_list(self, data):
         """Show DataFrame value"""
