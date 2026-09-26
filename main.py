@@ -1,5 +1,4 @@
 import time
-from pandas._libs.hashtable import duplicated
 from progress.bar import IncrementalBar
 from get_version import InformationProcessor, RetriveInfo
 from output_processor import OutputProcessor
@@ -64,14 +63,17 @@ def main():
         if selected_option == 'add new program':
             data = editor.add_new_program(data)
             save_data_to_csv(data, REPO)
+            data = pandas.read_csv(REPO, index_col=[0])
         elif selected_option == 'delete program':
             data = editor.delete_row(data)
             save_data_to_csv(data, REPO)
+            data = pandas.read_csv(REPO, index_col=[0])
         elif selected_option == 'show list':
             editor.show_list(data)
         elif selected_option == 'edit table':
             data = editor.edit_program(data)
             save_data_to_csv(data, REPO)
+            data = pandas.read_csv(REPO, index_col=[0])
         elif selected_option == 'start update':
             stay_in_menu = False
             break
