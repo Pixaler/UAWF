@@ -1,7 +1,5 @@
-from ssl import get_default_verify_paths
 from urllib.error import HTTPError
-
-from win32com.client import Dispatch
+import win32api
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 import os
@@ -23,8 +21,17 @@ class RetriveInfo:
     def get_current_version(self, app_location):
         """Obtain latest version of app that locate in provided location on Windows"""
         if os.path.exists(app_location):
-            parser = Dispatch("Scripting.FileSystemObject")
-            current_version = parser.GetFileVersion(app_location)
+            info = win32api.GetFileVersionInfo(app_location,"\\")
+
+            ms=info['FileVersionMS']
+            ls=info['FileVersionLS']
+
+            major = win32api.HIWORD(ms)
+            minor = win32api.LOWORD(ms)
+            build = win32api.HIWORD(ls)
+            revision = win32api.LOWORD(ls)
+
+            current_version = f"{major}.{minor}.{build}.{revision}"
         else:
             print("\nApp location is incorrect or not exist:", app_location)
             current_version = "Not found"
