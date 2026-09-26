@@ -38,7 +38,7 @@ def main():
     try:
         data = pandas.read_csv(REPO, index_col=[0])
     except FileNotFoundError:
-        first_repo={"name":"UAWF", "version_link":"/Pixaler/UAWF", "path_to_exe": "C:\\PortableApps\\UAWF\\uawf.exe", "download_link": "https://github.com/Pixaler/UAWF/releases/latest", "source":"GitHub" }
+        first_repo={"name":"UAWF", "version_link":"https://github.com/Pixaler/UAWF", "path_to_exe": "C:\\PortableApps\\UAWF\\uawf.exe", "download_link": "https://github.com/Pixaler/UAWF/releases/latest"}
         new_data = pandas.DataFrame(first_repo, index=[0])
         new_data.to_csv(csv_path)
     finally:
