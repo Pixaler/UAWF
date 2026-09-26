@@ -63,8 +63,20 @@ class RetriveInfo:
         latest = re.search(r'\d+(?:\.\d+)+', text).group(0)
         
         return latest
+        
+    def compare_versions(self, current_version, latest_version):
+        latest_version_list = list(int(y) for y in latest_version.split('.')) 
+        latest_version_str = ''.join(map(str,latest_version_list))
 
+        current_version_str = current_version.replace('.','')[:len(latest_version_str)]        
 
+        current_version_hash = int(current_version_str)
+        latest_version_hash = int(latest_version_str)
+
+        if latest_version_hash > current_version_hash:
+            return True
+        else: 
+            return False
         
 class InformationProcessor:
     def __init__(self) -> None:
@@ -81,9 +93,9 @@ class InformationProcessor:
         for (index, row) in data.iterrows():
             current_version = RetriveInfo().get_current_version(row["path_to_exe"])
             latest_version = RetriveInfo().get_latest_version(row["version_link"])
-            program = ProgramData(row["name"], row["download_link"], current_version, latest_version)            
-
-            list_of_prog.append(program) 
+            if RetriveInfo().compare_versions(current_version, latest_version):
+                program = ProgramData(row["name"], row["download_link"], current_version, latest_version)            
+                list_of_prog.append(program) 
             bar.next()
 
         return list_of_prog 
