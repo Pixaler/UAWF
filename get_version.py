@@ -1,9 +1,12 @@
 from urllib.error import HTTPError
 import win32api
-from urllib.request import Request, urlopen
+from urllib.request import Request, urlopen, urlretrieve
+import urllib.parse
 from bs4 import BeautifulSoup
 import os
 import re
+import ssl
+import certifi
 
 
 class ProgramData:
@@ -17,6 +20,23 @@ class ProgramData:
 class RetriveInfo:
     def __init__(self) -> None:
         pass
+
+    def download_from_portableapps(self, download_link, app_location):
+
+        soup = self.soup_reader(download_link)
+        tag = soup.find('a', style="display:block;width:313px;height:66px;border-radius:4px;padding:15px 17px 17px;color:white;font-family:Arimo;font-size:14px;text-decoration:none;box-sizing: border-box;text-align: left;background-color: #197f19;") 
+        link_to_parse = urllib.parse.quote("https://portableapps.com" + str(tag.get('href')), safe='')
+        print(link_to_parse)
+
+        soup = self.soup_reader(link_to_parse)
+        tag = soup.find('a', rel="nofollow")
+        link_to_download = "https://portableapps.com" + str(tag.get('href'))
+
+        filename = re.search(r"f=([^&]+)", link_to_download).group(1)
+        urlretrieve(link_to_download, app_location + filename)
+        print(f"Download {filename}")
+
+        
 
     def get_current_version(self, app_location):
         """Obtain latest version of app that locate in provided location on Windows"""
@@ -40,7 +60,8 @@ class RetriveInfo:
 
     def soup_reader(self, url): 
         """Make url ready for Soup"""
-        request_site = Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        os.environ['SSL_CERT_FILE'] = certifi.where()
+        request_site = Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'})
         try:
             page = urlopen(request_site)
             html = page.read().decode("ansi")

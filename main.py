@@ -85,6 +85,9 @@ def main():
     if update_all == 'y':
         for prog in list_of_prog:
             down_link = prog.download_link
+            # if down_link.strip().find("https://portableapps") == 0:
+            #     RetriveInfo().download_from_portableapps(down_link, application_path)
+            # else:
             webbrowser.open(down_link, new=0, autoraise = True)
     else: 
         # Menu with download links
@@ -92,11 +95,12 @@ def main():
         gui_worker.create_table(list_of_prog) # Creation of table
         while True:
             print(".\n.")
+            print(len(list_of_prog))
             menu_option = editor.check_answer(len(list_of_prog), f"Type number. Type 'exit' to stop: ")
             if menu_option == 0:
                 break
             else:
-                down_link = list_of_prog[menu_option].download_link
+                down_link = list_of_prog[menu_option - 1].download_link
                 webbrowser.open(down_link, new=0, autoraise = True)
 
 if __name__ == "__main__":
