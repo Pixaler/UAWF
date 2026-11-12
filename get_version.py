@@ -113,10 +113,11 @@ class InformationProcessor:
         list_of_prog = []
         for (index, row) in data.iterrows():
             current_version = RetriveInfo().get_current_version(row["path_to_exe"])
-            latest_version = RetriveInfo().get_latest_version(row["version_link"])
-            if RetriveInfo().compare_versions(current_version, latest_version):
-                program = ProgramData(row["name"], row["download_link"], current_version, latest_version)            
-                list_of_prog.append(program) 
+            if current_version != "Not found":
+                latest_version = RetriveInfo().get_latest_version(row["version_link"])
+                if RetriveInfo().compare_versions(current_version, latest_version):
+                    program = ProgramData(row["name"], row["download_link"], current_version, latest_version)            
+                    list_of_prog.append(program) 
             bar.next()
 
         return list_of_prog 
